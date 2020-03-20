@@ -10,7 +10,7 @@
 
 其次是，用某个人的 Github 账号开 private repository（free 用户只支持 3 collaborator，需要 pro 用户，而它可以从 student developer pack 获得）。
 
-最后是 https://git.lug.ustc.edu.cn/groups/new，我个人觉得这个比较好，没什么限制，而且速度还快。
+最后是 <https://git.lug.ustc.edu.cn/groups/new>，我个人觉得这个比较好，没什么限制，而且速度还快。
 
 <del>https://se.jisuanke.com/</del>
 
