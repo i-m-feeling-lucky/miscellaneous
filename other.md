@@ -6,13 +6,7 @@
 
 ## 代码平台
 
-首先是 Github organizations，我们建一个 organization，大家都作为 collaborator 加入它，最后我们的项目地址会在 github.com/organization-name/repository-name，但是免费版只能用于 public repository，我们肯定要 private（毕竟不同组之间做同一个项目）。
-
-其次是，用某个人的 Github 账号开 private repository（free 用户只支持 3 collaborator，需要 pro 用户，而它可以从 student developer pack 获得）。
-
-最后是 <https://git.lug.ustc.edu.cn/groups/new>，我个人觉得这个比较好，没什么限制，而且速度还快。
-
-<del>https://se.jisuanke.com/</del>
+使用 https://git.lug.ustc.edu.cn/ 平台。
 
 ## License
 
