@@ -2,7 +2,7 @@
 
 ## 组名
 
-I'm feeling lucky
+i-m-feeling-lucky
 
 ## 小组成员
 
