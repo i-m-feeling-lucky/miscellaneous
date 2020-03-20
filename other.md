@@ -26,8 +26,7 @@ ESLint + which?
 
 ## TypeScript
 
-Use it?
-
+Use it.
 
 ## 评分机制
 
