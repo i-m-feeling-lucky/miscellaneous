@@ -4,6 +4,7 @@
 - Bootstrap
 - BootstrapVue
 - Flask
+- Flask-SQLAlchemy
 - Rust
 
 # 想用的框架/库/工具
