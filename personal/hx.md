@@ -10,7 +10,7 @@
 * Vue.js
 * TypeScript
 * MirrorCode
-* juqery
+* jquery
 
 
 
