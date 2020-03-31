@@ -132,5 +132,5 @@ export default Vue.extend({
 1. https://github.com/vuejs/rfcs/pull/17
 2. https://github.com/vuejs/rfcs/pull/42
 3. https://github.com/vuejs/rfcs/blob/function-apis/active-rfcs/0000-function-api.md
-4. https://github.com/yusanshi/handwriting-go-away/blob/master/src/components/HomeBody.vue（我尝试使用 TypeScript 的一个例子）
+4. <https://github.com/yusanshi/handwriting-go-away/blob/master/src/components/HomeBody.vue>（我尝试使用 TypeScript 的一个例子）
 
