@@ -9,5 +9,5 @@
 
 ## ESLint
 
-1. Style guide: Airbnb|Standard|Google, which?
+1. Style guide: Airbnb.
 2. Use `...eslint-disable...` as little as possible.

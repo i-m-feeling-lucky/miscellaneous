@@ -10,19 +10,11 @@
 
 ## License
 
-由课程群里的讨论结果确定。
-
-<del>MIT, GNU GPLv3, Apache</del>
+[GNU AGPLv3](https://opensource.org/licenses/AGPL-3.0)
 
 ## JavaScript 代码风格
 
-ESLint + which?
-
-1. Airbnb
-
-2. Standard
-
-3. Google
+ESLint + Airbnb
 
 ## TypeScript
 
