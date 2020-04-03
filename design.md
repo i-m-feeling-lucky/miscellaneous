@@ -97,20 +97,20 @@
 
 ## 接口
 
-> 参数中省略了权限控制信息。
+> 参数中省略了权限控制等信息，只显示 data 域。
 
-| 请求方式 | 请求地址           | 功能                                                         | 参数 data 域                                      | 返回 | 权限控制                  | 相关表 |
-| -------- | ------------------ | ------------------------------------------------------------ | ------------------------------------------------- | ---- | ------------------------- | ------ |
-| POST     | `/api/user`        | 添加（一或多个）用户（HR、interviewer、interviewee）         | `[{"email":"", "password":"", "role":1|2|3}]`     |      | current_user.role== admin | `User` |
-| GET      | `/api/user/<id>`   | 获取用户信息                                                 |                                                   |      |                           | `User` |
-| POST     | `/api/user/assign` | 添加分配：HR - 候选人间（类型 0）、HR - 面试官间（类型 1），`id1` 和 `id2` 不区分顺序（当然，也可以不要 `type`） | `{"type":0|1, "users":[id1, id2]}`                |      | current_user.role== admin | `User` |
-| PUT      | `/api/user/<id>`   | 修改密码                                                     | `{"data":{"old_password":"", "new_password":""}}` |      | current_user.id == id     | `User` |
-| GET      | `/api/room/<id>`   | 获取面试信息                                                 |                                                   |      |                           | `Room` |
-|          |                    |                                                              |                                                   |      |                           |        |
-|          |                    |                                                              |                                                   |      |                           |        |
-|          |                    |                                                              |                                                   |      |                           |        |
-|          |                    |                                                              |                                                   |      |                           |        |
-|          |                    |                                                              |                                                   |      |                           |        |
+| 请求方式 | 请求地址           | 功能                                                         | 参数 data 域                                         | 返回 | 权限控制                  | 相关表 |
+| -------- | ------------------ | ------------------------------------------------------------ | ---------------------------------------------------- | ---- | ------------------------- | ------ |
+| POST     | `/api/user`        | 添加（一或多个）用户（HR、interviewer、interviewee）         | `[{"email": "", "password": "", "role": 1, 2 or 3}]` |      | current_user.role== admin | `User` |
+| GET      | `/api/user/<id>`   | 获取用户信息                                                 |                                                      |      |                           | `User` |
+| POST     | `/api/user/assign` | 添加分配：HR - 候选人间（类型 0）、HR - 面试官间（类型 1），`id1` 和 `id2` 不区分顺序（当然，也可以不要 `type`） | `{"type": 0 or 1, "users": [id1, id2]}`              |      | current_user.role== admin | `User` |
+| PUT      | `/api/user/<id>`   | 修改密码                                                     | `{"data": {"old_password": "", "new_password": ""}}` |      | current_user.id == id     | `User` |
+| GET      | `/api/room/<id>`   | 获取面试信息                                                 |                                                      |      |                           | `Room` |
+|          |                    |                                                              |                                                      |      |                           |        |
+|          |                    |                                                              |                                                      |      |                           |        |
+|          |                    |                                                              |                                                      |      |                           |        |
+|          |                    |                                                              |                                                      |      |                           |        |
+|          |                    |                                                              |                                                      |      |                           |        |
 
 
 
