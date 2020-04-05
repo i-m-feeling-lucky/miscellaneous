@@ -29,4 +29,6 @@
 
 # 想做的功能/模块/任务
 
-暂定，不想写 JavaScript
+- 不想写 JavaScript
+- CI/CD
+- 后端
