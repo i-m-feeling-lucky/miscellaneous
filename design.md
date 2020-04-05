@@ -97,7 +97,7 @@
 | length             | integer | 单位：分钟                |
 | rate               | string  | ['S', 'A', 'B', 'C', 'D'] |
 | comment            | string  |                           |
-| char_history       | ?       | 需要记录变化信息          |
+| chat_history       | ?       | 需要记录变化信息          |
 | whiteboard_history | ?       | 需要记录变化信息          |
 | code_history       | ?       | 需要记录变化信息          |
 | video_history      | ?       | 需要记录变化信息          |

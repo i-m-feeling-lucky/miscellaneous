@@ -5,15 +5,10 @@
 Vue.js (UI component library: [Element](https://github.com/ElemeFE/element), [Vuetify](https://github.com/vuetifyjs/vuetify), [iView](https://github.com/iview/iview), [Mint UI](https://github.com/ElemeFE/mint-ui/), [Quasar](https://github.com/quasarframework/quasar), [BootstrapVue](https://github.com/bootstrap-vue/bootstrap-vue))
 
 ## 后端
-Django, <del>Flask</del>
+Django
 
 ## 代码编辑器
 [CodeMirror](https://github.com/codemirror/CodeMirror), [Monaco](https://github.com/microsoft/monaco-editor)
-
-## <del>I18n</del>
-**没有这个需求。**
-
-<del>前期先用 hard-coded Chinese，开发基本完成后使用各类 i18n 库，如 [vue-i18n](https://github.com/kazupon/vue-i18n)，示例：https://handwritinggoaway.com/ 右上角的语言切换。</del>
 
 
 ## 视频
