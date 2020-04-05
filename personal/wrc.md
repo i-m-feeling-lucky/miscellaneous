@@ -31,4 +31,5 @@
 
 - 不想写 JavaScript
 - CI/CD
+- 测试
 - 后端
