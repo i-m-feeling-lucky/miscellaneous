@@ -23,10 +23,11 @@
 | 地址     | `/`                                                     | `/user/<id>`                                                 | `/user/<id>`                                                 | `/user/<id>`                                     | `/interview/<id>?token=XXXXX`                                |
 | 访问控制 | 无                                                      | 需超管账号密码登录                                           | 需 HR 账号密码登录                                           | 需面试官账号密码登录                             | 无 token 或无效 token 禁止访问（共有三个 token）             |
 | 内容一   | 登录（邮箱框、密码框）                                  | 个人密码修改（旧密码、新密码）                               | 个人密码修改（旧密码、新密码）                               | 个人密码修改（旧密码、新密码）                   | 面试前：该场面试的信息（根据三类 token 区别显示，如 HR 的 token 要比候选人的 token 显示更多信息）；面试中：面试界面（根据三类 token 区别显示）；面试后：回溯界面（注意此时只有 HR 的 token 可用） |
-| 内容二   | 其他不重要但是能充实首页的信息（如一些好看的 Banner  ） | 查看所有用户信息（HR：邮箱、被分配的面试官、被分配的候选人；面试官：邮箱、空闲时间、被分配的 HR、被安排的面试；候选人：邮箱、被分配的 HR、被安排的面试、HR 给的申请结果） | 查看被分配的面试官、分配的候选人（显示候选人的邮箱、被安排的面试及评分、评语） | 个人空闲时间查看和修改                           |                                                              |
-| 内容三   |                                                         | 添加用户（根据 role 不同而单个或批量，可放在表格左上角）     | 修改候选人的申请结果（待定、通过、拒绝），HR 要根据候选人接受的面试的结果来做决定，TA 若觉得当前面试场次不够，可继续对该候选人添加面试，直到做出通过或拒绝的决定 | 被安排的面试（这里的面试条目的超链接带有 token） |                                                              |
+| 内容二   | 其他不重要但是能充实首页的信息（如一些好看的 Banner  ） | 查看所有用户信息（HR：邮箱、姓名、被分配的面试官、被分配的候选人；面试官：邮箱、姓名、空闲时间、被分配的 HR、被安排的面试；候选人：邮箱、姓名、被分配的 HR、被安排的面试、HR 给的申请结果） | 查看被分配的面试官和候选人（显示候选人的邮箱、被安排的面试及评分、评语） | 个人空闲时间查看和修改                           |                                                              |
+| 内容三   |                                                         | 添加用户（根据 role 不同而单个或批量，可放在表格左上角；name 项只对候选人是必须的） | 设置候选人的申请结果（待定、通过、拒绝），HR 要根据候选人接受的面试的结果来做决定。候选人的每场面试结束，HR 都应该在这里给出结果：若认为需要进行下一轮面试，则 HR 给出”待定“的结果，否则给出”通过“或”拒绝“的结果。 | 被安排的面试（这里的面试条目的超链接带有 token） |                                                              |
 | 内容四   |                                                         | 添加分配（HR - 候选人间、HR - 面试官间，可放在每个用户条目中） | 添加面试（面试双方的 id、面试开始时间和时长）                |                                                  |                                                              |
-| 内容五   |                                                         |                                                              | 自己安排的面试信息（还未开始的面试显示重发通知邮件按钮，正在进行的面试显示旁观按钮，已结束的面试显示回溯按钮；这里的面试条目的超链接带有 token） |                                                  |                                                              |
+| 内容五   |                                                         | 查看题库                                                     | 自己安排的面试信息（<del>还未开始的面试显示重发通知邮件按钮</del>，正在进行的面试显示旁观按钮，已结束的面试显示回溯按钮；这里的面试条目的超链接带有 token） |                                                  |                                                              |
+|          |                                                         | 添加题目                                                     |                                                              |                                                  |                                                              |
 
 
 
@@ -41,6 +42,7 @@
 | 列名     | 类型    | 备注                   |
 | -------- | ------- | ---------------------- |
 | id       | integer | unique（自动生成即可） |
+| name | string | 不唯一，可为空，对候选人重要（是候选人的姓名），对其他角色不重要（管理员添加这类用户的时候可以省略 name） |
 | email    | string  | unique                 |
 | password | string  | 对于 interviewee 该项为空 |
 | role  | integer | [0, 1, 2, 3] => [admin, HR, interviewer, interviewee] |
@@ -101,6 +103,15 @@
 |                    |         |                           |
 |                    |         |                           |
 
+### `Problem`
+
+> 它的列根据具体选用的 Online Judge 来定。
+
+| 列名 | 类型    | 备注                   |
+| ---- | ------- | ---------------------- |
+| id   | integer | unique（自动生成即可） |
+|      |         |                        |
+
 ## 接口
 
 > 参数中省略了权限控制等信息，只显示 data 域。权限控制方式（即如何判断下面的 current_user）由负责后端的几位同学自行决定。
@@ -108,19 +119,20 @@
 | 请求方式 | 请求地址               | 功能                                                         | 参数 data 域                                                 | 返回 | 权限控制                                                     |
 | -------- | ---------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ---- | ------------------------------------------------------------ |
 | GET      | `/api/user`            | 批量获取用户信息                                             | some filters                                                 |      |                                                              |
-| POST     | `/api/user`            | 添加（一或多个）用户（HR、interviewer、interviewee）         | `[{"email": "", "password": "", "role": 1, 2 or 3}]`         |      | current_user.role== admin                                    |
-| GET      | `/api/user/<id>`       | 获取指定用户信息                                             |                                                              |      |                                                              |
+| POST     | `/api/user`            | 添加（一或多个）用户（HR、interviewer、interviewee）         | `[{"email": "", "name":"", "password": "", "role": 1, 2 or 3}]` |      | current_user.role == admin                                   |
+| GET      | `/api/user/<id>`       | 获取指定用户信息                                             | some filters                                                 |      |                                                              |
 | PUT      | `/api/user/<id>`       | 修改密码                                                     | `{"passowrd":{"old: "", "new": ""}}`                         |      | current_user.id == id && current_user.role != interviewee    |
 |          |                        | 修改个人空闲时间                                             | `{"free_time":?}`                                            |      | current_user.id == id && current_user.role == interviewer    |
-|          |                        | 修改申请结果                                                 | `{"application_result":?}`                                   |      | User(id).role == interviewee && current_user.id == User(id).assigned_HR（或者：current_user.role == HR && id in current_user.assigned_interviewee） |
+|          |                        | 设置申请结果（同时也要给候选人发邮件通知这个结果）           | `{"application_result":?}`                                   |      | User(id).role == interviewee && current_user.id == User(id).assigned_HR（或者：current_user.role == HR && id in current_user.assigned_interviewee） |
 | POST     | `/api/user/assignment` | 添加分配：HR - 候选人间（类型 0）、HR - 面试官间（类型 1），`id1` 和 `id2` 不区分顺序（当然，也可以不要 `type`） | `{"type": 0 or 1, "users": [id1, id2]}`                      |      | current_user.role == admin                                   |
 | GET      | `/api/interview`       | 批量获取面试信息                                             | some filters                                                 |      |                                                              |
-| POST     | `/api/interview`       | 添加面试（同时也要给候选人发通知面试的邮件，邮件里的面试链接有 TA 的 token） | `{"HR_id":?, "interviewer_id":?, "interviewee_id":?, "start_time":?, "length":?}` |      | current_user.role== admin                                    |
-| GET      | `/api/interview/<id>`  | 获取指定面试信息                                             |                                                              |      |                                                              |
-| PUT      | `/api/interview/<id>`  | 添加面试评价                                                 | `{"rate":?,comment:""}`                                      |      | Interview(id).interviewer_id = current_user.id               |
+| POST     | `/api/interview`       | 添加面试（同时也要给候选人和面试官发通知面试的邮件，邮件里的面试链接有各自的 token） | `{"HR_id":?, "interviewer_id":?, "interviewee_id":?, "start_time":?, "length":?}` |      | current_user.id== HR_id && interviewer_id in current_user.assigned_interviewer && interviewee_id in current_user.assigned_interviewee |
+| GET      | `/api/interview/<id>`  | 获取指定面试信息                                             | some filters (e.g. participants, history)                    |      |                                                              |
+| PUT      | `/api/interview/<id>`  | 添加面试评价                                                 | `{"rate":?,comment:""}`                                      |      | Interview(id).interviewer_id == current_user.id              |
 |          |                        | 更新面试记录                                                 | `{"char_history":?, "whiteboard_history":?, "code_history":?, "video_history":?}` |      | ?                                                            |
-|          |                        |                                                              |                                                              |      |                                                              |
-|          |                        |                                                              |                                                              |      |                                                              |
+| GET      | `/api/problem`         | 批量获取题目信息                                             | some filters                                                 |      | current_user.role == admin \|\| current_user.role == interviewer |
+| POST     | `/api/problem`         | 添加题目                                                     |                                                              |      | current_user.role == admin                                   |
+| GET      | `/api/problem/<id>`    | 获取指定题目信息                                             |                                                              |      | current_user.role == interviewer                             |
 
 
 
