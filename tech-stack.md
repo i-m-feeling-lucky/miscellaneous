@@ -12,7 +12,7 @@ Django
 
 
 ## 视频
-[WebRTC](https://github.com/muaz-khan/WebRTC-Experiment)
+[WebRTC](https://webrtc.org/)
 
 
 
