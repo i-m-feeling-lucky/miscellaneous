@@ -18,7 +18,7 @@ ESLint + Airbnb
 
 ## TypeScript
 
-Use it.
+Use TypeScript, but use object-based API in Vue 2.x instead of class-based API. See [typescript.md](./discuss/typescript.md) for more details.
 
 ## 评分机制
 
