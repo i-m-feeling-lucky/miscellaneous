@@ -33,7 +33,7 @@
 | ---------- | ------------------------------------------------------------ | ----------- | ------------------------------------------------------------ | --------------------------------------- |
 | 前端测试   | 参考：[Unit Testing — Vue.js](https://vuejs.org/v2/guide/unit-testing.html) | 前端、测试  | [Jest](https://github.com/facebook/jest), [Mocha](https://mochajs.org/), [Vue Test Utils](https://vue-test-utils.vuejs.org/) | sxy, hx?, wrc?, wsy?, zym?, zyt?       |
 | 前端 CI/CD | 目标：`git push` 到 master 分支后，自动运行单元测试和构建，若成功，则自动部署到服务器。需和负责“前端测试”的同学紧密沟通。 | 前端、CI/CD |                                                              | wrc                               |
-| 后端测试   | 为后端各个 API 编写测试                                      | 后端、测试  |                                                              | hx?, qyx, sxy?, wrc?, wsy?, zym?, zyt? |
+| 后端测试   | 为后端各个 API 编写测试                                      | 后端、测试  |                                                              | hx?, qyx, wrc?, wsy?, zym?, zyt? |
 | 后端 CI/CD | 目标：`git push` 到 master 分支后，自动运行单元测试和构建，若成功，则自动部署到服务器。需和负责“后端测试”的同学紧密沟通。 | 后端、CI/CD |                                                              | wrc                               |
 | 文档编写   | 编写部署文档、接口文档等（除了需要完成文档的内容，还要负责文档的展现形式，如使用各类文档生成工具生成静态网页） | 文档        |                                                              | sxy, xwl                                |
 
