@@ -13,10 +13,10 @@
 
 > 前后端基础框架的搭建，任务量大，代码量多，在最终评分中占比也高，应由较多人共同负责。
 
-| 任务         | 详情                                                         | 分类 | 技术选型                                                     | 负责人                        |
-| ------------ | ------------------------------------------------------------ | ---- | ------------------------------------------------------------ | ----------------------------- |
-| 前端框架搭建 | 完成前端整体框架（共 5 个页面，详见 [design.md](./design.md) 的“前端”部分） | 前端 | Vue.js + UI component library: [Element](https://github.com/ElemeFE/element), [Vuetify](https://github.com/vuetifyjs/vuetify), [iView](https://github.com/iview/iview), [Mint UI](https://github.com/ElemeFE/mint-ui/), [Quasar](https://github.com/quasarframework/quasar), [BootstrapVue](https://github.com/bootstrap-vue/bootstrap-vue) | sxy, xwl, yl, zyt             |
-| 后端框架搭建 | 完成数据库和相关 API（完成 `User`、`Interview` 和 `Problem` 三类表，完成相关 API，详见 [design.md](./design.md) 的“数据库”和“接口”部分） | 后端 | Django + ？                                                  | qyx,  wrc,  wsy，wyf, zym(DA) |
+| 任务         | 详情                                                         | 分类 | 技术选型                                                 | 负责人                        |
+| ------------ | ------------------------------------------------------------ | ---- | -------------------------------------------------------- | ----------------------------- |
+| 前端框架搭建 | 完成前端整体框架（共 5 个页面，详见 [design.md](./design.md) 的“前端”部分） | 前端 | Vue.js + [Vuetify](https://github.com/vuetifyjs/vuetify) | sxy, xwl, yl, zyt             |
+| 后端框架搭建 | 完成数据库和相关 API（完成 `User`、`Interview` 和 `Problem` 三类表，完成相关 API，详见 [design.md](./design.md) 的“数据库”和“接口”部分） | 后端 | Django + ？                                              | qyx,  wrc,  wsy，wyf, zym(DA) |
 
 ## 功能性任务
 
