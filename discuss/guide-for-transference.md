@@ -1,5 +1,22 @@
 # Guide for Transference
 
+**TL;DR**
+
+```bash
+cd frontend
+git remote set-url origin git@github.com:i-m-feeling-lucky/frontend.git
+cd ..
+
+cd miscellaneous
+git remote set-url origin git@github.com:i-m-feeling-lucky/miscellaneous.git
+cd ..
+
+cd online-interview
+git remote set-url origin git@github.com:i-m-feeling-lucky/online-interview.git
+```
+
+<hr>
+
 This guide helps you to transfer to GitHub from GitLab. You have two options: 
 
 - ***(Recommended)*** Discard the old remote on GitLab and transfer to the new on GitHub.
@@ -9,7 +26,7 @@ Take `frontend` repository for example.
 
 ## Discard the old
 
-Change URL of `origin` from `git@git.lug.ustc.edu.cn:i-m-feeling-lucky/*` to `git@github.com:i-m-feeling-lucky/`.
+Change URL of `origin` from `git@git.lug.ustc.edu.cn:i-m-feeling-lucky/*` to `git@github.com:i-m-feeling-lucky/*`.
 
 ```bash
 # View existing remotes
@@ -53,5 +70,4 @@ origin  git@github.com:i-m-feeling-lucky/frontend.git (push)
 **Reference**
 
 <https://help.github.com/en/github/using-git/renaming-a-remote>
-
 <https://stackoverflow.com/questions/22265837/transfer-git-repositories-from-gitlab-to-github-can-we-how-to-and-pitfalls-i>
