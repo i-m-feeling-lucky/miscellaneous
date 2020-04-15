@@ -2,11 +2,15 @@
 
 ## UI & UX
 
-模仿 hackerrank.com
+<del>模仿 hackerrank.com</del>
+
+待定
 
 ## 代码平台
 
-使用 https://git.lug.ustc.edu.cn/ 平台。
+<del>使用 https://git.lug.ustc.edu.cn/ 平台</del>
+
+使用 GitHub 平台（[GitHub is now free for teams - The GitHub Blog](https://github.blog/2020-04-14-github-is-now-free-for-teams/)）
 
 ## License
 
