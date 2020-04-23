@@ -49,9 +49,19 @@
 
 ### 文字聊天
 
+**RTCMultiConnection**
 
+WebRTC（Web Real-Time Communication）是一个提供实时通信的框架，受到 Apple、Goolge、Microsoft 等“大厂”的支持，进入了 W3C 推荐标准。
 
+网上有很多使用 WebRTC 的 JavaScript 库，经过一番搜索，我们竟然发现了一个几乎完全满足我们的需求（文字聊天、视频聊天、白板）的库 [RTCMultiConnection](https://github.com/muaz-khan/RTCMultiConnection)，基于它，我们搭建了一个 demo 网站：<https://rtc.yusanshi.com>，效果如下。
 
+![](https://img.yusanshi.com/upload/20200423165012476405.png)
+
+<img src="https://img.yusanshi.com/upload/20200423165020183173.png" width="400">
+
+看起来，只需要把界面调整一下（调整不同窗口的比例、精简掉一些不需要的功能）我们就可以拿起来用了。于是秉承着“不造轮子”的原则，我们决定使用它。
+
+至于在数据库中存储时间信息的要求，我们可以用一种比较 trivial 的解决办法：记录用户交互的时候同时加上时间戳信息。我们可以魔改 RTCMultiConnection 的代码，当用户有新的交互信息时（如发了一条新的文字聊天、白板上新加了一笔），直接向后台服务器相应的接口发送这个操作。至于视频的录制，可以利用 [MediaRecorder](https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder) API。所以基本上，交互信息的存储可以不再使用第三方库。
 
 ### 视频聊天
 
@@ -61,7 +71,7 @@
 
 ### 共享白板
 
-
+见“文字聊天”。
 
 
 
