@@ -76,8 +76,9 @@ WebRTC（Web Real-Time Communication）是一个提供实时通信的框架，�
 
 ### 前端测试
 
-经查阅资料后，综合使用的广泛性、便捷性，决定使用jest + vue-test-util进行前端测试。
+对比jest, Mocha，综合使用的广泛性、便捷性，决定使用jest + vue-test-util进行unit test.
 
+e2e测试考虑的工具有Nightwatch, Testcafe, cypress，考虑到功能完整、安装便捷、上手快等因素，决定使用cypress进行e2e test.
 
 ### 后端测试
 
