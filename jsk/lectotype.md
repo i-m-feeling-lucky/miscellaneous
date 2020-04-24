@@ -76,8 +76,7 @@ WebRTC（Web Real-Time Communication）是一个提供实时通信的框架，�
 
 ### 前端测试
 
-
-
+经查阅资料后，综合使用的广泛性、便捷性，决定使用jest + vue-test-util进行前端测试。
 
 
 ### 后端测试
