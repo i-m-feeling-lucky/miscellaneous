@@ -80,13 +80,6 @@ WebRTC（Web Real-Time Communication）是一个提供实时通信的框架，�
 
 
 
-### 前端 CI/CD
-
-
-
-
-
-
 ### 后端测试
 
 
@@ -94,12 +87,11 @@ WebRTC（Web Real-Time Communication）是一个提供实时通信的框架，�
 
 
 
-### 后端 CI/CD
+### CI/CD
 
+使用 GitHub Actions，在 PR 开启后运行测试，在合并到 master 后先运行测试，若通过则利用 [ssh-deploy] 通知 VPS 进行部署。
 
-
-
-
+[ssh-deploy]: https://github.com/easingthemes/ssh-deploy
 
 ### 文档编写
 
