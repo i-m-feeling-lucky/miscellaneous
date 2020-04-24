@@ -43,9 +43,9 @@
 
 ### 代码编辑、运行和评测
 
+代码编辑部分我们在权衡了 [CodeMirror](https://github.com/codemirror/CodeMirror) 和 [Monaco](https://github.com/microsoft/monaco-editor) 之后，选择了[Monaco](https://github.com/microsoft/monaco-editor)。
 
-
-
+关于运行和评测，目前还没有找到好的轮子，初步的想法是 docker 在后端跑个虚拟环境然后参照 HUSTOJ 这个华科的 OJ 系统做一下评测。
 
 ### 文字聊天
 
