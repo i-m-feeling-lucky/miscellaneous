@@ -82,11 +82,11 @@ e2e测试考虑的工具有Nightwatch, Testcafe, cypress，考虑到功能完整
 
 ### 后端测试
 
+在项目开发的中期（未出现成型可运行版本时），采用Postman进行手工测试
 
+在基本的开发完成之后，可进行自动化的测试，考虑到大部分成员对python相对熟悉，选择Python中的Nose测试框架对后端接口进行自动化测试
 
-
-
-
+若后续开发过程中Python的测试局限性过大，则选用TestNG＋HttpClient进行后端测试
 ### CI/CD
 
 使用 GitHub Actions，在 PR 开启后运行测试，在合并到 master 后先运行测试，若通过则利用 [ssh-deploy] 通知 VPS 进行部署。
