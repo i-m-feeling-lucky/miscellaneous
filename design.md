@@ -76,33 +76,33 @@
 | scheduled_interview | integer[] | 外码（？），该面试官被安排的面试                         |
 
 #### `Interviewee`
-| 列名                | 类型              | 备注                                                         |
-| ------------------- | ----------------- | ------------------------------------------------------------ |
-| id                  | integer           | 外码                                                         |
-| assigned_HR         | integer           | 外码，该候选人被分配的 HR                                    |
-| scheduled_interview | integer[]         | 外码（？），该候选人被安排的面试（为什么是数组？因为需求里面 HR 可以给同一个候选人安排多场面试） |
-| application_result  | string or integer | ['Pending', 'Approved', 'Rejected']，是 HR 给的面试结果，初始值应是 'Pending'。注意这里的结果和单场面试结果的区别：这里的结果是申请的最终结果，HR 自行安排面试的次数，TA 根据所有的单场面试的结果来决定这里的最终结果 |
+| 列名                | 类型      | 备注                                                         |
+| ------------------- | --------- | ------------------------------------------------------------ |
+| id                  | integer   | 外码                                                         |
+| assigned_HR         | integer   | 外码，该候选人被分配的 HR                                    |
+| scheduled_interview | integer[] | 外码（？），该候选人被安排的面试（为什么是数组？因为需求里面 HR 可以给同一个候选人安排多场面试） |
+| application_result  | integer   | map: ['Pending', 'Approved', 'Rejected']，是 HR 给的面试结果，初始值应是 'Pending'。注意这里的结果和单场面试结果的区别：这里的结果是申请的最终结果，HR 自行安排面试的次数，TA 根据所有的单场面试的结果来决定这里的最终结果 |
 ### `Interview`
 
-| 列名               | 类型    | 备注                      |
-| ------------------ | ------- | ------------------------- |
-| id                 | integer | unique（自动生成即可）    |
-| HR_id              | integer | 外码                      |
-| interviewer_id     | integer | 外码                      |
-| interviewee_id     | integer | 外码                      |
-| HR_token           | string  | 随机生成，可使用 UUID     |
-| interviewer_token  | string  | 随机生成，可使用 UUID     |
-| interviewee_token  | string  | 随机生成，可使用 UUID     |
-| start_time         | time    |                           |
-| length             | integer | 单位：分钟                |
-| rate               | string  | ['S', 'A', 'B', 'C', 'D'] |
-| comment            | string  |                           |
-| chat_history       | ?       | 需要记录变化信息          |
-| whiteboard_history | ?       | 需要记录变化信息          |
-| code_history       | ?       | 需要记录变化信息          |
-| video_history      | ?       | 需要记录变化信息          |
-|                    |         |                           |
-|                    |         |                           |
+| 列名               | 类型    | 备注                           |
+| ------------------ | ------- | ------------------------------ |
+| id                 | integer | unique（自动生成即可）         |
+| HR_id              | integer | 外码                           |
+| interviewer_id     | integer | 外码                           |
+| interviewee_id     | integer | 外码                           |
+| HR_token           | string  | 随机生成，可使用 UUID          |
+| interviewer_token  | string  | 随机生成，可使用 UUID          |
+| interviewee_token  | string  | 随机生成，可使用 UUID          |
+| start_time         | time    |                                |
+| length             | integer | 单位：分钟                     |
+| rate               | integer | map: ['S', 'A', 'B', 'C', 'D'] |
+| comment            | string  |                                |
+| chat_history       | ?       | 需要记录变化信息               |
+| whiteboard_history | ?       | 需要记录变化信息               |
+| code_history       | ?       | 需要记录变化信息               |
+| video_history      | ?       | 需要记录变化信息               |
+|                    |         |                                |
+|                    |         |                                |
 
 ### `Problem`
 
@@ -115,27 +115,7 @@
 
 ## 接口
 
-> 参数中省略了权限控制等信息，只显示 data 域。权限控制方式（即如何判断下面的 current_user）由负责后端的几位同学自行决定。
-
-| 请求方式 | 请求地址               | 功能                                                         | 参数 data 域                                                 | 返回 | 权限控制                                                     |
-| -------- | ---------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ---- | ------------------------------------------------------------ |
-| GET      | `/api/user`            | 批量获取用户信息                                             | some filters                                                 |      |                                                              |
-| POST     | `/api/user`            | 添加（一或多个）用户（HR、interviewer、interviewee）         | `[{"email": "", "name":"", "password": "", "role": 1, 2 or 3}]` |      | current_user.role == admin                                   |
-| GET      | `/api/user/<id>`       | 获取指定用户信息                                             | some filters                                                 |      |                                                              |
-| PUT      | `/api/user/<id>`       | 修改密码                                                     | `{"passowrd":{"old: "", "new": ""}}`                         |      | current_user.id == id && current_user.role != interviewee    |
-|          |                        | 修改个人空闲时间                                             | `{"free_time":?}`                                            |      | current_user.id == id && current_user.role == interviewer    |
-|          |                        | 设置申请结果（同时也要给候选人发邮件通知这个结果）           | `{"application_result":?}`                                   |      | User(id).role == interviewee && current_user.id == User(id).assigned_HR（或者：current_user.role == HR && id in current_user.assigned_interviewee） |
-| POST     | `/api/user/assignment` | 添加分配：HR - 候选人间（类型 0）、HR - 面试官间（类型 1），`id1` 和 `id2` 不区分顺序（当然，也可以不要 `type`） | `{"type": 0 or 1, "users": [id1, id2]}`                      |      | current_user.role == admin                                   |
-| GET      | `/api/interview`       | 批量获取面试信息                                             | some filters                                                 |      |                                                              |
-| POST     | `/api/interview`       | 添加面试（同时也要给候选人和面试官发通知面试的邮件，邮件里的面试链接有各自的 token） | `{"HR_id":?, "interviewer_id":?, "interviewee_id":?, "start_time":?, "length":?}` |      | current_user.id== HR_id && interviewer_id in current_user.assigned_interviewer && interviewee_id in current_user.assigned_interviewee |
-| GET      | `/api/interview/<id>`  | 获取指定面试信息                                             | some filters (e.g. participants, history)                    |      |                                                              |
-| PUT      | `/api/interview/<id>`  | 添加面试评价                                                 | `{"rate":?,comment:""}`                                      |      | Interview(id).interviewer_id == current_user.id              |
-|          |                        | 更新面试记录                                                 | `{"char_history":?, "whiteboard_history":?, "code_history":?, "video_history":?}` |      | ?                                                            |
-| GET      | `/api/problem`         | 批量获取题目信息                                             | some filters                                                 |      | current_user.role == admin \|\| current_user.role == interviewer |
-| POST     | `/api/problem`         | 添加题目                                                     |                                                              |      | current_user.role == admin                                   |
-| GET      | `/api/problem/<id>`    | 获取指定题目信息                                             |                                                              |      | current_user.role == interviewer                             |
-
-
+[api.yaml](./api.yaml)（可在 <https://editor.swagger.io/> 查看）
 
 ## 测试/运维
 

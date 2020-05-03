@@ -1,0 +1,600 @@
+openapi: 3.0.1
+info:
+  title: 在线面试平台
+  description: >
+    相关约定：
+
+    1. 状态码：为简化设计，除了 `200:OK`（请求成功时）和 `401:Unauthorized`（登录时账号或密码不正确，或请求时 token
+    不正确时）外，其他的报错都返回 `422:Unprocessable Entity`，但返回 422 的同时须在 body
+    中返回报错信息供客户端显示（若客户端在使用部分接口时，需对都返回 422 的不同结果做区分，则再对相关接口另行设置状态码）；
+
+    2. 角色 int2str：`["admin", "HR", "interviewer", "interviewee"]`；
+
+    3. 面试评分（面试官给的，每场都有）int2str：`["S", "A", "B", "C", "D"]`；
+
+    4. 面试结果（HR 给的，每场都有）int2str：`["Pending", "Approved", "Rejected"]`。
+  license:
+    name: AGPL
+    url: 'https://www.gnu.org/licenses/agpl-3.0.en.html'
+  version: 1.0.0
+servers:
+  - url: 'https://interview.wangrc.top/api'
+tags:
+  - name: user
+    description: 和用户相关的操作
+  - name: interview
+    description: 和面试相关的操作
+  - name: problem
+    description: 和题库相关的操作
+paths:
+  /login:
+    post:
+      tags:
+        - user
+      summary: 登录，获取 token 和用户信息
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: 登录成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  role:
+                    type: integer
+                  token:
+                    type: string
+                  expires:
+                    type: integer
+                    description: 有效期（单位：秒）
+        '401':
+          description: 账号或密码错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    enum:
+                      - 账号或密码错误
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+  /logout:
+    post:
+      tags:
+        - user
+      summary: 退出，使 token 失效
+      parameters:
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 退出成功
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+  /user:
+    get:
+      tags:
+        - user
+      summary: 批量获取用户信息
+      description: 权限：TODO
+      parameters:
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  description: TODO
+                  properties:
+                    id:
+                      type: integer
+                    email:
+                      type: string
+                    name:
+                      type: string
+                    role:
+                      type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+    post:
+      tags:
+        - user
+      summary: 添加用户
+      description: 添加（一或多个）用户（HR、interviewer、interviewee），权限：current_user.role == admin
+      parameters:
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  email:
+                    type: string
+                  name:
+                    type: string
+                  password:
+                    type: string
+                  role:
+                    type: integer
+      responses:
+        '200':
+          description: 添加成功
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+  '/user/{id}':
+    get:
+      tags:
+        - user
+      summary: 获取指定用户信息
+      description: 权限：TODO
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                description: TODO
+                properties:
+                  id:
+                    type: integer
+                  email:
+                    type: string
+                  name:
+                    type: string
+                  role:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+  '/user/{id}/password':
+    put:
+      tags:
+        - user
+      summary: 修改密码
+      description: 权限：current_user.id == id && current_user.role != interviewee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                old_password:
+                  type: string
+                new_password:
+                  type: string
+      responses:
+        '200':
+          description: 修改成功
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+  '/user/{id}/free_time':
+    put:
+      tags:
+        - user
+      summary: 修改个人空闲时间
+      description: 权限：current_user.id == id && current_user.role == interviewer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                free_time:
+                  type: string
+      responses:
+        '200':
+          description: 修改成功
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+  '/user/{id}/application_result':
+    put:
+      tags:
+        - user
+      summary: 设置申请结果
+      description: >-
+        同时也要给候选人发邮件通知这个结果。权限：User(id).role == interviewee && current_user.id ==
+        User(id).assigned_HR（或者：current_user.role == HR && id in
+        current_user.assigned_interviewee）
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                application_result:
+                  type: integer
+      responses:
+        '200':
+          description: 设置成功
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+  /user/assignment:
+    post:
+      tags:
+        - user
+      summary: 添加分配
+      description: >-
+        添加分配：HR - 候选人间、HR - 面试官间，`id1` 和 `id2` 不区分顺序，且具体属于哪种分配方式根据 id 所对应的 role
+        确定，权限：current_user.role == admin
+      parameters:
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id1:
+                  type: integer
+                id2:
+                  type: integer
+      responses:
+        '200':
+          description: 添加成功
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+  /interview:
+    get:
+      tags:
+        - interview
+      summary: 批量获取面试信息
+      description: 权限：TODO
+      parameters:
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  description: TODO
+                  properties:
+                    id:
+                      type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+    post:
+      tags:
+        - interview
+      summary: 添加面试
+      description: >-
+        同时也要给候选人和面试官发通知面试的邮件，邮件里的面试链接有各自的 token，权限：current_user.id== HR_id &&
+        interviewer_id in current_user.assigned_interviewer && interviewee_id in
+        current_user.assigned_interviewee
+      parameters:
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                HR_id:
+                  type: integer
+                interviewer_id:
+                  type: integer
+                interviewee_id:
+                  type: integer
+                start_time:
+                  description: Unix Timestamp
+                  type: integer
+                length:
+                  description: 单位：分钟
+                  type: integer
+      responses:
+        '200':
+          description: 添加成功
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+  '/interview/{id}':
+    get:
+      tags:
+        - interview
+      summary: 获取指定面试信息
+      description: 权限：TODO
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  description: TODO
+                  properties:
+                    id:
+                      type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+  '/interview/{id}/evaluation':
+    put:
+      tags:
+        - interview
+      summary: 添加面试评价
+      description: 权限：Interview(id).interviewer_id == current_user.id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rate:
+                  type: integer
+                comment:
+                  type: string
+      responses:
+        '200':
+          description: 设置成功
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+  '/interview/{id}/history':
+    put:
+      tags:
+        - interview
+      summary: 添加面试记录
+      description: 权限：TODO
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: TODO
+              properties:
+                char_history:
+                  type: string
+                whiteboard_history:
+                  type: string
+                code_history:
+                  type: string
+                video_history:
+                  type: string
+      responses:
+        '200':
+          description: 设置成功
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+  /problem:
+    get:
+      tags:
+        - problem
+      summary: 批量获取题目信息
+      description: 权限：TODO
+      parameters:
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  description: TODO
+                  properties:
+                    problem:
+                      type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+    post:
+      tags:
+        - problem
+      summary: 添加题目
+      description: 权限：current_user.role == admin
+      parameters:
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: TODO
+              properties:
+                problem:
+                  type: string
+      responses:
+        '200':
+          description: 添加成功
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+  '/problem/{id}':
+    get:
+      tags:
+        - problem
+      summary: 获取指定题目信息
+      description: 权限：TODO
+      parameters:
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                description: TODO
+                properties:
+                  problem:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+components:
+  responses:
+    Unauthorized:
+      description: token 信息无效
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                enum:
+                  - token 信息无效
+    Unprocessable:
+      description: 请求失败（General，应在 message 中附上报错信息）
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
