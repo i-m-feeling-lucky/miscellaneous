@@ -64,14 +64,14 @@
 | name | string |  |
 | application_result  | integer   | map: ['Pending', 'Approved', 'Rejected']，是 HR 给的面试结果，初始值应是 'Pending'。注意这里的结果和单场面试结果的区别：这里的结果是申请的最终结果，HR 自行安排面试的次数，TA 根据所有的单场面试的结果来决定这里的最终结果 |
 
-### `HR_assign_interviewer`
+### `HRAssignInterviewer`
 
 | 列名        | 类型    | 备注        |
 |-------------|---------|-------------|
 | HR          | integer | 外码 → User |
 | interviewer | integer | 外码 → User |
 
-### `HR_assign_interviewee`
+### `HRAssignInterviewee`
 
 | 列名        | 类型    | 备注               |
 |-------------|---------|--------------------|
