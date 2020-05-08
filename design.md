@@ -102,7 +102,7 @@
 |-----------|----------|------------------------------------------|
 | interview | integer  | 外码 → Interview                         |
 | type      | string   | 取值范围 ["chat", "whiteboard", "code"]  |
-| time      | datetime |                                          |
+| time      | datetime | `default=datetime.datetime.utcnow`       |
 | data      | string   | JSON 字符串，格式根据 history 的类型决定 |
 
 ### `Problem`
