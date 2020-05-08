@@ -50,8 +50,6 @@ paths:
               schema:
                 type: object
                 properties:
-                  name:
-                    type: string
                   role:
                     type: integer
                   token:
@@ -584,18 +582,22 @@ paths:
                 type: array
                 items:
                   type: object
-                  description: TODO
                   properties:
-                    problem:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    difficulty:
                       type: string
         '401':
           $ref: '#/components/responses/Unauthorized'
         '422':
           $ref: '#/components/responses/Unprocessable'
     post:
+      deprecated: true
       tags:
         - problem
-      summary: 添加题目
+      summary: 添加题目（暂时不提供这个功能，直接预设即可）
       description: 权限：current_user.role == admin
       parameters:
         - name: X-Token
@@ -641,9 +643,54 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  title:
+                    type: string
+                  text:
+                    type: string
+                  difficulty:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+    post:
+      tags:
+        - problem
+      summary: 提交解答
+      description: 权限：TODO
+      parameters:
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lang:
+                  type: string
+                code:
+                  type: string
+      responses:
+        '200':
+          description: 验证成功
+          content:
+            application/json:
+              schema:
+                type: object
                 description: TODO
                 properties:
-                  problem:
+                  result:
+                    type: string
+                  message:
                     type: string
         '401':
           $ref: '#/components/responses/Unauthorized'
