@@ -127,7 +127,9 @@ paths:
       tags:
         - user
       summary: 添加用户
-      description: 添加（一或多个）用户（HR、interviewer、interviewee），权限：current_user.role == admin
+      description: >-
+        添加（一或多个）用户（HR、interviewer、interviewee），只有 interviewee 有
+        name。权限：current_user.role == admin
       parameters:
         - name: X-Token
           in: header
@@ -420,6 +422,39 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '422':
           $ref: '#/components/responses/Unprocessable'
+  '/interview/{id}/verify':
+    get:
+      tags:
+        - interview
+      summary: 校验面试的 token 信息，获取连接密码
+      description: 权限：TODO
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 校验成功
+          content:
+            application/json:
+              schema:
+                type: object
+                description: TODO
+                properties:
+                  role:
+                    type: integer
+                  password:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
   '/interview/{id}/evaluation':
     put:
       tags:
@@ -453,12 +488,59 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '422':
           $ref: '#/components/responses/Unprocessable'
-  '/interview/{id}/history':
-    put:
+  '/interview/{id}/history/[chat|whiteboard|code]':
+    get:
       tags:
         - interview
-      summary: 添加面试记录
-      description: 权限：TODO
+      summary: 获取聊天记录
+      description: >-
+        当 `scope=latest` 时返回 [Chat|Whiteboard|Code]History 表里对应 id 的时间戳最大的记录（长为
+        1 的数组），`scope=all` 时返回 [Chat|Whiteboard|Code]History 表里对应 id
+        的所有记录。权限：TODO
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+        - name: scope
+          in: query
+          schema:
+            type: string
+            enum:
+              - all
+              - latest
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    time:
+                      type: integer
+                      description: UTC time in milliseconds
+                    data:
+                      type: object
+                      description: Simply json.loads()
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+    post:
+      tags:
+        - interview
+      summary: 添加聊天记录
+      description: >-
+        请求体内容由 client 维护，后台直接把 `(id, datetime.utcnow, json.dumps(request.body))`
+        插入到 `[Chat|Whiteboard|Code]History` 表，权限：TODO
       parameters:
         - name: id
           in: path
@@ -475,18 +557,9 @@ paths:
             schema:
               type: object
               description: TODO
-              properties:
-                char_history:
-                  type: string
-                whiteboard_history:
-                  type: string
-                code_history:
-                  type: string
-                video_history:
-                  type: string
       responses:
         '200':
-          description: 设置成功
+          description: 插入成功
         '401':
           $ref: '#/components/responses/Unauthorized'
         '422':
