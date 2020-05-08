@@ -86,16 +86,23 @@
 | HR_id              | integer | 外码 → User                    |
 | interviewer_id     | integer | 外码 → User                    |
 | interviewee_id     | integer | 外码 → Interviewee             |
+| interviewer_token  | string  | 随机生成 UUID          |
 | interviewee_token  | string  | 随机生成 UUID          |
 | start_time         | time    |                                |
 | length             | integer | 单位分钟，> 0，建表时默认 30   |
 | rate               | string  | 取值范围 ['S', 'A', 'B', 'C', 'D']，可空 |
 | comment            | string  | 面试官评价，建表时默认 `""`    |
 | done               | bool    | 面试是否已完成，建表时默认 false |
-| chat_history       | ?       | 需要记录变化信息               |
-| whiteboard_history | ?       | 需要记录变化信息               |
-| code_history       | ?       | 需要记录变化信息               |
 | video_history      | ?       | 需要记录变化信息               |
+
+### `History`
+
+| 列名      | 类型     | 备注                                     |
+|-----------|----------|------------------------------------------|
+| interview | integer  | 外码 → Interview                         |
+| type      | string   | 取值范围 ["chat", "whiteboard", "code"]  |
+| time      | datetime |                                          |
+| data      | string   | JSON 字符串，格式根据 history 的类型决定 |
 
 ### `Problem`
 
