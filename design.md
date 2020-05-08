@@ -88,6 +88,7 @@
 | interviewee_id     | integer | 外码 → Interviewee             |
 | interviewer_token  | string  | 随机生成 UUID          |
 | interviewee_token  | string  | 随机生成 UUID          |
+| password           | string  | 连接密码，插入新记录时随机生成 |
 | start_time         | time    |                                |
 | length             | integer | 单位分钟，> 0，建表时默认 30   |
 | rate               | string  | 取值范围 ['S', 'A', 'B', 'C', 'D']，可空 |
