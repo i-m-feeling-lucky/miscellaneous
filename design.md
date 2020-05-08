@@ -55,7 +55,7 @@
 | 列名  | 类型          | 备注                                         |
 |-------|---------------|----------------------------------------------|
 | id    |               | 外码 → User                                  |
-| token | string (UUID) | 登录时给一个 token，用于验证身份，登出时删去 |
+| token | UUID          | 登录时给一个 token，用于验证身份，登出时删去 |
 
 ### `Interviewee`
 | 列名                | 类型      | 备注                                                         |
@@ -86,8 +86,8 @@
 | HR_id              | integer | 外码 → User                    |
 | interviewer_id     | integer | 外码 → User                    |
 | interviewee_id     | integer | 外码 → Interviewee             |
-| interviewer_token  | string  | 随机生成 UUID          |
-| interviewee_token  | string  | 随机生成 UUID          |
+| interviewer_token  | UUID    | `default=uuid.uuid4`           |
+| interviewee_token  | UUID    | `default=uuid.uuid4`           |
 | password           | string  | 连接密码，插入新记录时随机生成 |
 | start_time         | time    |                                |
 | length             | integer | 单位分钟，> 0，建表时默认 30   |
