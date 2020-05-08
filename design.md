@@ -34,75 +34,76 @@
 
 ## 数据库
 
-> 1. 面试评价（`['Pending', 'Approved', 'Rejected']` 和 `['S', 'A', 'B', 'C', 'D']`）亦可使用 integer 类型；
->
-> 2. `integer[]` 类型的可能用外码会比较麻烦（需要单独对关系建一个表），或许可以用 string 类型、使用 JSON 字符串？（`stringify([1, 5, 6, 12]`），我没有研究过这个地方，了解也不多，请负责这里的同学自行决定。
-
 ### `User`
 
 | 列名     | 类型    | 备注                   |
 | -------- | ------- | ---------------------- |
 | id       | integer | unique（自动生成即可） |
-| name | string | 不唯一，可为空，对候选人重要（是候选人的姓名），对其他角色不重要（管理员添加这类用户的时候可以省略 name） |
 | email    | string  | unique                 |
-| password | string  | 对于 interviewee 该项为空 |
-| role  | integer | [0, 1, 2, 3] => [admin, HR, interviewer, interviewee] |
-
-
-#### `Admin`
-
-| 列名     | 类型   | 备注 |
-| -------- | ------ | ---- |
-| id | integer | 外码 |
-|      |         |      |
-
-#### `HR`
-
-| 列名                 | 类型      | 备注                             |
-| -------------------- | --------- | -------------------------------- |
-| id                   | integer   | 外码                             |
-| assigned_interviewer | integer[] | 外码（？），该 HR 被分配的面试官 |
-| assigned_interviewee | integer[] | 外码（？），该 HR 被分配的候选人 |
-| scheduled_interview  | integer[] | 外码（？），该 HR 安排的面试     |
-
+| password | string  |                        |
+| role  | integer | [0, 1, 2] => [admin, HR, interviewer] |
 
 #### `Interviewer`
 
 | 列名                | 类型      | 备注                                                     |
 | ------------------- | --------- | -------------------------------------------------------- |
-| id                  | integer   | 外码                                                     |
-| assigned_HR         | integer[] | 外码（？），该面试官被分配的 HR（可同时被分配给多个 HR） |
-| free_time           | ?         | 该面试官自己在系统中填写的空闲时间                       |
-| scheduled_interview | integer[] | 外码（？），该面试官被安排的面试                         |
+| id                  | integer   | 外码 → User                                              |
+| free_time           | string    | 该面试官自己在系统中填写的空闲时间（自然语言）           |
 
-#### `Interviewee`
+### `UserLogin`
+
+| 列名  | 类型          | 备注                                         |
+|-------|---------------|----------------------------------------------|
+| id    |               | 外码 → User                                  |
+| token | UUID          | 登录时给一个 token，用于验证身份，登出时删去 |
+
+### `Interviewee`
 | 列名                | 类型      | 备注                                                         |
 | ------------------- | --------- | ------------------------------------------------------------ |
-| id                  | integer   | 外码                                                         |
-| assigned_HR         | integer   | 外码，该候选人被分配的 HR                                    |
-| scheduled_interview | integer[] | 外码（？），该候选人被安排的面试（为什么是数组？因为需求里面 HR 可以给同一个候选人安排多场面试） |
+| email    | string  | 主键                 |
+| name | string |  |
 | application_result  | integer   | map: ['Pending', 'Approved', 'Rejected']，是 HR 给的面试结果，初始值应是 'Pending'。注意这里的结果和单场面试结果的区别：这里的结果是申请的最终结果，HR 自行安排面试的次数，TA 根据所有的单场面试的结果来决定这里的最终结果 |
+
+### `HRAssignInterviewer`
+
+| 列名        | 类型    | 备注        |
+|-------------|---------|-------------|
+| HR          | integer | 外码 → User |
+| interviewer | integer | 外码 → User |
+
+### `HRAssignInterviewee`
+
+| 列名        | 类型    | 备注               |
+|-------------|---------|--------------------|
+| HR          | integer | 外码 → User        |
+| interviewee | integer | 外码 → Interviewee |
+
 ### `Interview`
 
 | 列名               | 类型    | 备注                           |
 | ------------------ | ------- | ------------------------------ |
 | id                 | integer | unique（自动生成即可）         |
-| HR_id              | integer | 外码                           |
-| interviewer_id     | integer | 外码                           |
-| interviewee_id     | integer | 外码                           |
-| HR_token           | string  | 随机生成，可使用 UUID          |
-| interviewer_token  | string  | 随机生成，可使用 UUID          |
-| interviewee_token  | string  | 随机生成，可使用 UUID          |
+| HR_id              | integer | 外码 → User                    |
+| interviewer_id     | integer | 外码 → User                    |
+| interviewee_id     | integer | 外码 → Interviewee             |
+| interviewer_token  | UUID    | `default=uuid.uuid4`           |
+| interviewee_token  | UUID    | `default=uuid.uuid4`           |
+| password           | string  | 连接密码，插入新记录时随机生成 |
 | start_time         | time    |                                |
-| length             | integer | 单位：分钟                     |
-| rate               | integer | map: ['S', 'A', 'B', 'C', 'D'] |
-| comment            | string  |                                |
-| chat_history       | ?       | 需要记录变化信息               |
-| whiteboard_history | ?       | 需要记录变化信息               |
-| code_history       | ?       | 需要记录变化信息               |
+| length             | integer | 单位分钟，> 0，建表时默认 30   |
+| rate               | string  | 取值范围 ['S', 'A', 'B', 'C', 'D']，可空 |
+| comment            | string  | 面试官评价，建表时默认 `""`    |
+| done               | bool    | 面试是否已完成，建表时默认 false |
 | video_history      | ?       | 需要记录变化信息               |
-|                    |         |                                |
-|                    |         |                                |
+
+### `History`
+
+| 列名      | 类型     | 备注                                     |
+|-----------|----------|------------------------------------------|
+| interview | integer  | 外码 → Interview                         |
+| type      | string   | 取值范围 ["chat", "whiteboard", "code"]  |
+| time      | datetime | `default=datetime.datetime.utcnow`       |
+| data      | string   | JSON 字符串，格式根据 history 的类型决定 |
 
 ### `Problem`
 
