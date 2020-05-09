@@ -74,7 +74,7 @@ paths:
     post:
       tags:
         - user
-      summary: 退出，使 token 失效
+      summary: 退出，使 token 失效。token 无效并不报错
       parameters:
         - name: X-Token
           in: header
@@ -83,10 +83,6 @@ paths:
       responses:
         '200':
           description: 退出成功
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '422':
-          $ref: '#/components/responses/Unprocessable'
   /user:
     get:
       tags:
@@ -113,8 +109,6 @@ paths:
                       type: integer
                     email:
                       type: string
-                    name:
-                      type: string
                     role:
                       type: integer
         '401':
@@ -125,9 +119,7 @@ paths:
       tags:
         - user
       summary: 添加用户
-      description: >-
-        添加（一或多个）用户（HR、interviewer、interviewee），只有 interviewee 有
-        name。权限：current_user.role == admin
+      description: 添加（一或多个）用户（HR、interviewer）。权限：current_user.role == admin
       parameters:
         - name: X-Token
           in: header
@@ -142,8 +134,6 @@ paths:
                 type: object
                 properties:
                   email:
-                    type: string
-                  name:
                     type: string
                   password:
                     type: string
@@ -185,8 +175,6 @@ paths:
                     type: integer
                   email:
                     type: string
-                  name:
-                    type: string
                   role:
                     type: integer
         '401':
@@ -198,7 +186,7 @@ paths:
       tags:
         - user
       summary: 修改密码
-      description: 权限：current_user.id == id && current_user.role != interviewee
+      description: 权限：current_user.id == id
       parameters:
         - name: id
           in: path
@@ -257,21 +245,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '422':
           $ref: '#/components/responses/Unprocessable'
-  '/user/{id}/application_result':
+  '/user/application_result':
     put:
       tags:
         - user
       summary: 设置申请结果
-      description: >-
-        同时也要给候选人发邮件通知这个结果。权限：User(id).role == interviewee && current_user.id ==
-        User(id).assigned_HR（或者：current_user.role == HR && id in
-        current_user.assigned_interviewee）
+      description: 同时也要给候选人发邮件通知这个结果。权限：current_user.role == HR && (current_user, email) in HRAssignInterviewee
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
         - name: X-Token
           in: header
           schema:
@@ -282,6 +262,8 @@ paths:
             schema:
               type: object
               properties:
+                email:
+                  type: string
                 application_result:
                   type: integer
       responses:
@@ -291,14 +273,12 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '422':
           $ref: '#/components/responses/Unprocessable'
-  /user/assignment:
+  /user/assign/interviewer:
     post:
       tags:
         - user
       summary: 添加分配
-      description: >-
-        添加分配：HR - 候选人间、HR - 面试官间，`id1` 和 `id2` 不区分顺序，且具体属于哪种分配方式根据 id 所对应的 role
-        确定，权限：current_user.role == admin
+      description: 添加分配：HR - 面试官间。权限：current_user.role == admin
       parameters:
         - name: X-Token
           in: header
@@ -310,10 +290,39 @@ paths:
             schema:
               type: object
               properties:
-                id1:
+                hr:
                   type: integer
-                id2:
+                interviewer:
                   type: integer
+      responses:
+        '200':
+          description: 添加成功
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+  /user/assign/interviewee:
+    post:
+      tags:
+        - user
+      summary: 添加分配
+      description: 添加分配：HR - 候选人间。权限：current_user.role == admin
+      parameters:
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hr:
+                  type: integer
+                interviewee:
+                  type: string
+                  description: interviewee 的 email
       responses:
         '200':
           description: 添加成功
@@ -353,10 +362,7 @@ paths:
       tags:
         - interview
       summary: 添加面试
-      description: >-
-        同时也要给候选人和面试官发通知面试的邮件，邮件里的面试链接有各自的 token，权限：current_user.id== HR_id &&
-        interviewer_id in current_user.assigned_interviewer && interviewee_id in
-        current_user.assigned_interviewee
+      description: 同时也要给候选人和面试官发通知面试的邮件，邮件里的面试链接有各自的 token，权限：current_user.id == hr_id && (current_user, interviewer_id) in HRAssignInterviewer && (current_user, interviewee_id) in HRAssignInterviewee
       parameters:
         - name: X-Token
           in: header
@@ -554,7 +560,7 @@ paths:
           application/json:
             schema:
               type: object
-              description: TODO
+              description: 直接将 request body 插入数据库
       responses:
         '200':
           description: 插入成功
