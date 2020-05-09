@@ -47,14 +47,14 @@
 
 | 列名                | 类型      | 备注                                                     |
 | ------------------- | --------- | -------------------------------------------------------- |
-| id                  | integer   | 外码 → User                                              |
+| id                  | integer   | [OneToOneField] → User                                   |
 | free_time           | string    | 该面试官自己在系统中填写的空闲时间（自然语言）           |
 
 ### `UserLogin`
 
 | 列名  | 类型          | 备注                                         |
 |-------|---------------|----------------------------------------------|
-| id    |               | 外码 → User                                  |
+| user  |               | 外码 → User                                  |
 | token | UUID          | 登录时给一个 token，用于验证身份，登出时删去 |
 
 ### `Interviewee`
@@ -68,14 +68,14 @@
 
 | 列名        | 类型    | 备注        |
 |-------------|---------|-------------|
-| HR          | integer | 外码 → User |
-| interviewer | integer | 外码 → User |
+| hr          | integer | 外码 → User |
+| interviewer | integer | 外码 → Interviewer |
 
 ### `HRAssignInterviewee`
 
 | 列名        | 类型    | 备注               |
 |-------------|---------|--------------------|
-| HR          | integer | 外码 → User        |
+| hr          | integer | 外码 → User        |
 | interviewee | integer | 外码 → Interviewee |
 
 ### `Interview`
@@ -83,25 +83,31 @@
 | 列名               | 类型    | 备注                           |
 | ------------------ | ------- | ------------------------------ |
 | id                 | integer | unique（自动生成即可）         |
-| HR_id              | integer | 外码 → User                    |
-| interviewer_id     | integer | 外码 → User                    |
-| interviewee_id     | integer | 外码 → Interviewee             |
+| hr                 | integer | 外码 → User                    |
+| interviewer        | integer | 外码 → Interviewer             |
+| interviewee        | integer | 外码 → Interviewee             |
 | interviewer_token  | UUID    | `default=uuid.uuid4`           |
 | interviewee_token  | UUID    | `default=uuid.uuid4`           |
 | password           | string  | 连接密码，插入新记录时随机生成 |
 | start_time         | time    |                                |
 | length             | integer | 单位分钟，> 0，建表时默认 30   |
-| rate               | string  | 取值范围 ['S', 'A', 'B', 'C', 'D']，可空 |
-| comment            | string  | 面试官评价，建表时默认 `""`    |
-| done               | bool    | 面试是否已完成，建表时默认 false |
-| video_history      | ?       | 需要记录变化信息               |
+
+### `InterviewComment`
+
+一个 interview 有 comment 说明已经结束。
+
+| 列名               | 类型    | 备注                           |
+| ------------------ | ------- | ------------------------------ |
+| interview          |         | [OneToOneField] → Interview    |
+| rate               | integer | 0--4 ⇒ ['S', 'A', 'B', 'C', 'D'] |
+| comment            | string  | 面试官评价                     |
 
 ### `History`
 
 | 列名      | 类型     | 备注                                     |
 |-----------|----------|------------------------------------------|
 | interview | integer  | 外码 → Interview                         |
-| type      | string   | 取值范围 ["chat", "whiteboard", "code"]  |
+| type      | integer  | 0--2 ⇒ ["chat", "whiteboard", "code"]  |
 | time      | datetime | `default=datetime.datetime.utcnow`       |
 | data      | string   | JSON 字符串，格式根据 history 的类型决定 |
 
@@ -113,6 +119,8 @@
 | ---- | ------- | ---------------------- |
 | id   | integer | unique（自动生成即可） |
 |      |         |                        |
+
+[OneToOneField]: https://docs.djangoproject.com/en/3.0/ref/models/fields/#django.db.models.OneToOneField
 
 ## 接口
 
