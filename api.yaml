@@ -362,7 +362,7 @@ paths:
       tags:
         - interview
       summary: 添加面试
-      description: 同时也要给候选人和面试官发通知面试的邮件，邮件里的面试链接有各自的 token，权限：current_user.id == hr_id && (current_user, interviewer_id) in HRAssignInterviewer && (current_user, interviewee_id) in HRAssignInterviewee
+      description: 同时也要给候选人和面试官发通知面试的邮件，邮件里的面试链接有各自的 token，权限：current_user.id == hr_id && (current_user, interviewer_id) in HRAssignInterviewer && (current_user, email) in HRAssignInterviewee
       parameters:
         - name: X-Token
           in: header
@@ -378,8 +378,9 @@ paths:
                   type: integer
                 interviewer_id:
                   type: integer
-                interviewee_id:
-                  type: integer
+                email:
+                  description: interviewee 的 email
+                  type: string
                 start_time:
                   description: Unix Timestamp
                   type: integer
