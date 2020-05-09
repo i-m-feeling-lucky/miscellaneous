@@ -107,7 +107,7 @@
 | 列名      | 类型     | 备注                                     |
 |-----------|----------|------------------------------------------|
 | interview | integer  | 外码 → Interview                         |
-| type      | integer  | 0--2 ⇒ ["chat", "whiteboard", "code"]  |
+| type      | string   | ["chat", "whiteboard", "code"]           |
 | time      | datetime | `default=datetime.datetime.utcnow`       |
 | data      | string   | JSON 字符串，格式根据 history 的类型决定 |
 
