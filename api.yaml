@@ -494,7 +494,7 @@ paths:
       description: >-
         当 `scope=latest` 时返回 [Chat|Whiteboard|Code]History 表里对应 id 的时间戳最大的记录（长为
         1 的数组），`scope=all` 时返回 [Chat|Whiteboard|Code]History 表里对应 id
-        的所有记录。权限：TODO
+        的所有记录。若无对应记录，`scope=latest` 和 `scope=all` 都返回空数组。权限：TODO
       parameters:
         - name: id
           in: path
