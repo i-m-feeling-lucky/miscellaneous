@@ -40,7 +40,7 @@
 | -------- | ------- | ---------------------- |
 | id       | integer | unique（自动生成即可） |
 | email    | string  | unique                 |
-| password | string  |                        |
+| pass_sha256 | string  | 暂时用 SHA256 哈希后的密码 `hashlib.sha256(b'foo').hexdigest()` |
 | role  | integer | [0, 1, 2] => [admin, HR, interviewer] |
 
 #### `Interviewer`
