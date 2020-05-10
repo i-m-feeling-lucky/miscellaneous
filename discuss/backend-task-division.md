@@ -12,9 +12,14 @@
 见 [api.yaml]，可以使用 <https://editor.swagger.io/> 查看，数据库的定义见
 [design.md][db]。
 
+然后最好把代码风格统一为 [PEP8]（除了每行最多可以有 100 个字符），可以用
+[autopep8] 之类的工具进行自动格式化。
+
 [`need_token`]: https://github.com/i-m-feeling-lucky/backend/blob/683204b1414f0f45d22fc2bd5c2a98a1b57c59e1/interview/app/utils.py#L5-L21
 [api.yaml]: https://github.com/i-m-feeling-lucky/miscellaneous/blob/master/api.yaml
 [db]: https://github.com/i-m-feeling-lucky/miscellaneous/blob/master/design.md#%E6%95%B0%E6%8D%AE%E5%BA%93
+[PEP8]: https://www.python.org/dev/peps/pep-0008/
+[autopep8]: https://github.com/hhatto/autopep8
 
 ## 工作流
 
