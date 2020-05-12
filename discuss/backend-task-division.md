@@ -44,7 +44,7 @@ git push -u origin xxx
 
 Login，发送 JSON `{"email": "foo@bar.com", "password": "pass"}`
 
-```shell
+```console
 $ http :8000/api/login email=foo@bar.com password=pass
 HTTP/1.1 200 OK
 Date: Sun, 10 May 2020 02:41:12 GMT
@@ -61,7 +61,7 @@ Content-Length: 60
 
 Logout，指定头部的 X-Token
 
-```shell
+```console
 $ http POST :8000/api/logout x-token:81783889-397b-46db-a687-b76a880b394b
 HTTP/1.1 200 OK
 Date: Sun, 10 May 2020 02:41:30 GMT
