@@ -253,7 +253,7 @@ paths:
       tags:
         - user
       summary: 设置申请结果
-      description: 同时也要给候选人发邮件通知这个结果。权限：current_user.role == HR && (current_user, email) in HRAssignInterviewee
+      description: 同时也要给候选人发邮件通知这个结果。权限：current_user.role == HR && (current_user, interviewee) in HRAssignInterviewee
       parameters:
         - name: X-Token
           in: header
@@ -265,7 +265,7 @@ paths:
             schema:
               type: object
               properties:
-                email:
+                interviewee:
                   type: string
                 application_result:
                   type: integer
@@ -377,7 +377,7 @@ paths:
       tags:
         - interview
       summary: 添加面试
-      description: 同时也要给候选人和面试官发通知面试的邮件，邮件里的面试链接有各自的 token，权限：current_user.id == hr_id && (current_user, interviewer_id) in HRAssignInterviewer && (current_user, email) in HRAssignInterviewee
+      description: 同时也要给候选人和面试官发通知面试的邮件，邮件里的面试链接有各自的 token，权限：current_user.id == hr && (current_user, interviewer) in HRAssignInterviewer && (current_user, interviewee) in HRAssignInterviewee
       parameters:
         - name: X-Token
           in: header
@@ -389,11 +389,11 @@ paths:
             schema:
               type: object
               properties:
-                HR_id:
+                hr:
                   type: integer
-                interviewer_id:
+                interviewer:
                   type: integer
-                email:
+                interviewee:
                   description: interviewee 的 email
                   type: string
                 start_time:
@@ -490,7 +490,7 @@ paths:
       tags:
         - interview
       summary: 添加面试评价
-      description: 权限：Interview(id).interviewer_id == current_user.id
+      description: 权限：Interview(id).interviewer == current_user.id
       parameters:
         - name: id
           in: path

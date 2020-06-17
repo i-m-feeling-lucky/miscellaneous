@@ -76,7 +76,7 @@
 | 列名        | 类型    | 备注               |
 |-------------|---------|--------------------|
 | hr          | integer | 外码 → User        |
-| interviewee | integer | 外码 → Interviewee |
+| interviewee | string  | 外码 → Interviewee |
 
 ### `Interview`
 
@@ -85,7 +85,7 @@
 | id                 | integer | unique（自动生成即可）         |
 | hr                 | integer | 外码 → User                    |
 | interviewer        | integer | 外码 → Interviewer             |
-| interviewee        | integer | 外码 → Interviewee             |
+| interviewee        | string  | 外码 → Interviewee             |
 | interviewer_token  | UUID    | `default=uuid.uuid4`           |
 | interviewee_token  | UUID    | `default=uuid.uuid4`           |
 | password           | string  | 连接密码，插入新记录时随机生成 |
