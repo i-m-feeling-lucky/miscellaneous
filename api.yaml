@@ -150,6 +150,7 @@ paths:
           $ref: '#/components/responses/Unprocessable'
   '/user/{id}':
     get:
+      deprecated: true
       tags:
         - user
       summary: 获取指定用户信息
