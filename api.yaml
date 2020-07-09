@@ -218,6 +218,35 @@ paths:
         '422':
           $ref: '#/components/responses/Unprocessable'
   '/user/{id}/free_time':
+    get:
+        tags:
+          - user
+        summary: 获取个人空闲时间
+        description: 权限：current_user.id == id && current_user.role == interviewer
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: integer
+          - name: X-Token
+            in: header
+            schema:
+              type: string
+        responses:
+          '200':
+            description: 获取成功
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    free_time:
+                      type: string
+          '401':
+            $ref: '#/components/responses/Unauthorized'
+          '422':
+            $ref: '#/components/responses/Unprocessable'
     put:
       tags:
         - user
