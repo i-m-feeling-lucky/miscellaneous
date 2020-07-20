@@ -6,11 +6,14 @@
     - [前端](#前端)
     - [数据库](#数据库)
         - [`User`](#user)
-            - [`Admin`](#admin)
-            - [`HR`](#hr)
             - [`Interviewer`](#interviewer)
-            - [`Interviewee`](#interviewee)
+        - [`UserLogin`](#userlogin)
+        - [`Interviewee`](#interviewee)
+        - [`HRAssignInterviewer`](#hrassigninterviewer)
+        - [`HRAssignInterviewee`](#hrassigninterviewee)
         - [`Interview`](#interview)
+        - [`InterviewComment`](#interviewcomment)
+        - [`History`](#history)
         - [`Problem`](#problem)
     - [接口](#接口)
     - [测试/运维](#测试运维)
@@ -91,6 +94,7 @@
 | password           | string  | 连接密码，插入新记录时随机生成 |
 | start_time         | time    |                                |
 | length             | integer | 单位分钟，> 0，建表时默认 30   |
+| status             | string  | ['upcoming', 'active', 'ended'] |
 
 ### `InterviewComment`
 
