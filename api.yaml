@@ -398,6 +398,12 @@ paths:
                     length:
                       description: 单位：分钟
                       type: integer
+                    status:
+                      type: string
+                      enum:
+                       - Upcoming
+                       - Active
+                       - Ended
         '401':
           $ref: '#/components/responses/Unauthorized'
         '422':
@@ -431,6 +437,12 @@ paths:
                 length:
                   description: 单位：分钟
                   type: integer
+                status:
+                  type: string
+                  enum:
+                   - Upcoming
+                   - Active
+                   - Ended
       responses:
         '200':
           description: 添加成功
@@ -540,6 +552,42 @@ paths:
                   type: integer
                 comment:
                   type: string
+      responses:
+        '200':
+          description: 设置成功
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+  '/interview/{id}/status':
+    put:
+      tags:
+        - interview
+      summary: 设置面试状态
+      description: 权限：Interview(id).interviewer == current_user.id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                   - Upcoming
+                   - Active
+                   - Ended
+                  
       responses:
         '200':
           description: 设置成功
