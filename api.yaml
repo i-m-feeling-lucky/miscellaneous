@@ -401,9 +401,9 @@ paths:
                     status:
                       type: string
                       enum:
-                       - Upcoming
-                       - Active
-                       - Ended
+                       - upcoming
+                       - active
+                       - ended
         '401':
           $ref: '#/components/responses/Unauthorized'
         '422':
@@ -440,9 +440,9 @@ paths:
                 status:
                   type: string
                   enum:
-                   - Upcoming
-                   - Active
-                   - Ended
+                   - upcoming
+                   - active
+                   - ended
       responses:
         '200':
           description: 添加成功
@@ -584,9 +584,9 @@ paths:
                 status:
                   type: string
                   enum:
-                   - Upcoming
-                   - Active
-                   - Ended
+                   - upcoming
+                   - active
+                   - ended
                   
       responses:
         '200':
