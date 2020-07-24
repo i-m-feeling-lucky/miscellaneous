@@ -386,12 +386,16 @@ paths:
                   properties:
                     id:
                       type: integer
+                      description: 本场面试的 id
                     hr:
                       type: integer
                     interviewer:
                       type: integer
                     interviewee:
                       type: string
+                    token:
+                      type: string
+                      description: 根据请求者的身份（面试官 / 面试者）返回与身份对应的 token
                     start_time:
                       description: UTC timestamp
                       type: integer
@@ -477,6 +481,7 @@ paths:
                 properties:
                   id:
                     type: integer
+                    description: 本场面试的id
                   hr:
                     type: integer
                   interviewer:
@@ -489,6 +494,12 @@ paths:
                   length:
                     description: 单位：分钟
                     type: integer
+                  status:
+                    type: string
+                    enum:
+                      - upcoming
+                      - active
+                      - ended
         '401':
           $ref: '#/components/responses/Unauthorized'
         '422':
