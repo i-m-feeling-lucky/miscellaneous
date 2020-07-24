@@ -386,7 +386,7 @@ paths:
                   properties:
                     id:
                       type: integer
-                      description: 本场面试的id
+                      description: 本场面试的 id
                     hr:
                       type: integer
                     interviewer:
@@ -395,7 +395,7 @@ paths:
                       type: string
                     token:
                       type: string
-                      description: 根据请求者的身份（面试官/面试者）返回与身份对应的token
+                      description: 根据请求者的身份（面试官 / 面试者）返回与身份对应的 token
                     start_time:
                       description: UTC timestamp
                       type: integer
