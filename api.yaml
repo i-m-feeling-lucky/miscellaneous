@@ -1,17 +1,13 @@
 openapi: 3.0.1
 info:
   title: 在线面试平台
-  description: >
+  description: |
     相关约定：
-
     1. 状态码：为简化设计，除了 `200:OK`（请求成功时）和 `401:Unauthorized`（登录时账号或密码不正确，或请求时 token
     不正确时）外，其他的报错都返回 `422:Unprocessable Entity`，但返回 422 的同时须在 body
     中返回报错信息供客户端显示（若客户端在使用部分接口时，需对都返回 422 的不同结果做区分，则再对相关接口另行设置状态码）；
-
     2. 角色 int2str：`["admin", "HR", "interviewer", "interviewee"]`；
-
     3. 面试评分（面试官给的，每场都有）int2str：`["S", "A", "B", "C", "D"]`；
-
     4. 面试结果（HR 给的，每场都有）int2str：`["Pending", "Approved", "Rejected"]`。
   license:
     name: AGPL
@@ -382,16 +378,22 @@ paths:
                 type: array
                 items:
                   type: object
-                  description: TODO
                   properties:
                     id:
                       type: integer
+                      description: 本场面试的id
                     hr:
                       type: integer
+                      description: HR在数据库User表中的主键
                     interviewer:
                       type: integer
+                      description: 面试官在数据库User表中的主键
                     interviewee:
                       type: string
+                      description: 面试者在数据库Interviewee表中的主键
+                    token:
+                      type: string
+                      description: 根据请求者的身份返回与身份对应的token
                     start_time:
                       description: UTC timestamp
                       type: integer
@@ -399,6 +401,7 @@ paths:
                       description: 单位：分钟
                       type: integer
                     status:
+                      description: 本场面试的状态，只有三种取值
                       type: string
                       enum:
                        - upcoming
@@ -472,23 +475,38 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                description: TODO
-                properties:
-                  id:
-                    type: integer
-                  hr:
-                    type: integer
-                  interviewer:
-                    type: integer
-                  interviewee:
-                    type: string
-                  start_time:
-                    description: UTC timestamp
-                    type: integer
-                  length:
-                    description: 单位：分钟
-                    type: integer
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: 本场面试的id
+                    hr:
+                      type: integer
+                      description: HR在数据库User表中的主键
+                    interviewer:
+                      type: integer
+                      description: 面试官在数据库User表中的主键
+                    interviewee:
+                      type: string
+                      description: 面试者在数据库Interviewee表中的主键
+                    token:
+                      type: string
+                      description: 根据请求者的身份返回与身份对应的token
+                    start_time:
+                      description: UTC timestamp
+                      type: integer
+                    length:
+                      description: 单位：分钟
+                      type: integer
+                    status:
+                      description: 本场面试的状态，只有三种取值
+                      type: string
+                      enum:
+                       - upcoming
+                       - active
+                       - ended
         '401':
           $ref: '#/components/responses/Unauthorized'
         '422':

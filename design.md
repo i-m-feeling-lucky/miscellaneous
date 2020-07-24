@@ -3,20 +3,20 @@
 <!-- TOC -->
 
 - [设计方案（草稿）](#设计方案草稿)
-    - [前端](#前端)
-    - [数据库](#数据库)
-        - [`User`](#user)
-            - [`Interviewer`](#interviewer)
-        - [`UserLogin`](#userlogin)
-        - [`Interviewee`](#interviewee)
-        - [`HRAssignInterviewer`](#hrassigninterviewer)
-        - [`HRAssignInterviewee`](#hrassigninterviewee)
-        - [`Interview`](#interview)
-        - [`InterviewComment`](#interviewcomment)
-        - [`History`](#history)
-        - [`Problem`](#problem)
-    - [接口](#接口)
-    - [测试/运维](#测试运维)
+  - [前端](#前端)
+  - [数据库](#数据库)
+    - [`User`](#user)
+      - [`Interviewer`](#interviewer)
+    - [`UserLogin`](#userlogin)
+    - [`Interviewee`](#interviewee)
+    - [`HRAssignInterviewer`](#hrassigninterviewer)
+    - [`HRAssignInterviewee`](#hrassigninterviewee)
+    - [`Interview`](#interview)
+    - [`InterviewComment`](#interviewcomment)
+    - [`History`](#history)
+    - [`Problem`](#problem)
+  - [接口](#接口)
+  - [测试/运维](#测试运维)
 
 <!-- /TOC -->
 
@@ -89,6 +89,7 @@
 | hr                 | integer | 外码 → User                    |
 | interviewer        | integer | 外码 → Interviewer             |
 | interviewee        | string  | 外码 → Interviewee             |
+| hr_token           | UUID    | `default=uuid.uuid4`           |
 | interviewer_token  | UUID    | `default=uuid.uuid4`           |
 | interviewee_token  | UUID    | `default=uuid.uuid4`           |
 | password           | string  | 连接密码，插入新记录时随机生成 |
