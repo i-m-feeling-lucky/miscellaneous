@@ -441,12 +441,6 @@ paths:
                 length:
                   description: 单位：分钟
                   type: integer
-                status:
-                  type: string
-                  enum:
-                   - upcoming
-                   - active
-                   - ended
       responses:
         '200':
           description: 添加成功
