@@ -305,6 +305,45 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '422':
           $ref: '#/components/responses/Unprocessable'
+  '/user/{id}/assignment':
+    get:
+      tags:
+        - user
+      summary: 获取分配给 HR 的面试官和面试者
+      description: 获取分配情况：HR - 面试官间，HR - 面试者间。权限：current_user.role == HR && (current_user, interviewer) in HRAssignInterviewer && (current_user, interviewee) in HRAssignInterviewee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: HR 的 id
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  interviewers:
+                    type: array
+                    description: 被分配到此 HR 手中的面试官们的 id
+                    items:
+                      type: integer
+                  interviewees:
+                    type: array
+                    description: 被分配到此 HR 手中的面试者们的 email
+                    items:
+                      type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
   /user/assign/interviewer:
     post:
       tags:
