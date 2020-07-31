@@ -434,7 +434,7 @@ paths:
                       type: string
                     token:
                       type: string
-                      description: 根据请求者的身份（面试官 / 面试者）返回与身份对应的 token
+                      description: 若请求者的身份为面试官或面试者，则应当是与之对应的 token，若请求者身份为 HR，则应当是空字符串
                     start_time:
                       description: UTC timestamp
                       type: integer
@@ -447,6 +447,12 @@ paths:
                        - upcoming
                        - active
                        - ended
+                    rate:
+                      type: integer
+                      description: 面试官对本次面试的打分。若面试状态不是 ended，则应当是 200
+                    comment:
+                      type: string
+                      description: 面试官对本次面试的评价。若面试状态不是 ended，则应当是空字符串
         '401':
           $ref: '#/components/responses/Unauthorized'
         '422':
