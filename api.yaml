@@ -24,8 +24,8 @@ tags:
     description: 和用户相关的操作
   - name: interview
     description: 和面试相关的操作
-  - name: problem
-    description: 和题库相关的操作
+  - name: run
+    description: 代码运行
 paths:
   /login:
     post:
@@ -761,113 +761,11 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '422':
           $ref: '#/components/responses/Unprocessable'
-  /problem:
-    get:
-      tags:
-        - problem
-      summary: 批量获取题目信息
-      description: 权限：TODO
-      parameters:
-        - name: X-Token
-          in: header
-          schema:
-            type: string
-      responses:
-        '200':
-          description: 获取成功
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    title:
-                      type: string
-                    difficulty:
-                      type: string
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '422':
-          $ref: '#/components/responses/Unprocessable'
-    post:
-      deprecated: true
-      tags:
-        - problem
-      summary: 添加题目（暂时不提供这个功能，直接预设即可）
-      description: 权限：current_user.role == admin
-      parameters:
-        - name: X-Token
-          in: header
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              description: TODO
-              properties:
-                problem:
-                  type: string
-      responses:
-        '200':
-          description: 添加成功
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '422':
-          $ref: '#/components/responses/Unprocessable'
-  '/problem/{id}':
-    get:
-      tags:
-        - problem
-      summary: 获取指定题目信息
-      description: 权限：TODO
-      parameters:
-        - name: X-Token
-          in: header
-          schema:
-            type: string
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: 获取成功
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  title:
-                    type: string
-                  text:
-                    type: string
-                  difficulty:
-                    type: string
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '422':
-          $ref: '#/components/responses/Unprocessable'
+  /run:
     post:
       tags:
-        - problem
-      summary: 提交解答
-      description: 权限：TODO
-      parameters:
-        - name: X-Token
-          in: header
-          schema:
-            type: string
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - run
+      summary: 代码运行
       requestBody:
         content:
           application/json:
@@ -876,23 +774,33 @@ paths:
               properties:
                 lang:
                   type: string
+                  enum:
+                    - c
+                    - cpp
+                    - python
                 code:
+                  type: string
+                input:
                   type: string
       responses:
         '200':
-          description: 验证成功
+          description: 提交成功
           content:
             application/json:
               schema:
                 type: object
-                description: TODO
                 properties:
+                  error_code:
+                    type: integer
+                    enum:
+                      - 0
+                      - 1
+                      - 2
+                      - 3
+                      - 4
+                      - 5
                   result:
                     type: string
-                  message:
-                    type: string
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '422':
           $ref: '#/components/responses/Unprocessable'
 components:
