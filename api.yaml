@@ -761,7 +761,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '422':
           $ref: '#/components/responses/Unprocessable'
-  /run:
+  /api/oj-interface/result:
     post:
       tags:
         - run
@@ -790,15 +790,14 @@ paths:
               schema:
                 type: object
                 properties:
-                  error_code:
-                    type: integer
+                  message:
+                    type: string
                     enum:
-                      - 0
-                      - 1
-                      - 2
-                      - 3
-                      - 4
-                      - 5
+                      - Run Success
+                      - Time Limit Exceed
+                      - Compile Error
+                      - Runtime Error
+                      - System Error
                   result:
                     type: string
         '422':
