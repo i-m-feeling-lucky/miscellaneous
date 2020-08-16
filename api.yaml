@@ -761,7 +761,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '422':
           $ref: '#/components/responses/Unprocessable'
-  /api/oj-interface/result:
+  /oj-interface/result:
     post:
       tags:
         - run
