@@ -366,7 +366,14 @@ paths:
                     type: array
                     description: 被分配到此 HR 手中的面试官们的 id
                     items:
-                      type: integer
+                      type: object
+                      properties:
+                        uid:
+                          type: integer
+                          description: 面试官的 uid
+                        email:
+                          type: string
+                          description: 面试官的 email
                   interviewees:
                     type: array
                     description: 被分配到此 HR 手中的面试者们的 email, name, application_result
