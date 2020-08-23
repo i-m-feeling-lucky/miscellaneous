@@ -479,9 +479,9 @@ paths:
                       type: integer
                     interviewee:
                       type: string
-                    token:
+                    interviewer_token:
                       type: string
-                      description: 若请求者的身份为面试官或面试者，则应当是与之对应的 token，若请求者身份为 HR，则应当是空字符串
+                      description: 若请求者的身份为面试官，则应当是与之对应的 token，否则为空字符串
                     start_time:
                       description: UTC timestamp
                       type: integer
