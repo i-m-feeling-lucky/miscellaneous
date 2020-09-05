@@ -93,6 +93,7 @@
 | password           | string  | 连接密码，插入新记录时随机生成 |
 | start_time         | time    |                                |
 | length             | integer | 单位分钟，> 0，建表时默认 30   |
+| actual_length      | integer | 单位秒，是面试的实际时长，用于回放 |
 | status             | string  | ['upcoming', 'active', 'ended'] |
 
 ### `InterviewComment`
