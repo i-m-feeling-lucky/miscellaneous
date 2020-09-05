@@ -774,6 +774,79 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '422':
           $ref: '#/components/responses/Unprocessable'
+
+  '/interview/{id}/history/video/{index}':
+    get:
+      tags:
+        - interview
+      summary: 获取聊天视频
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: index
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                description: blob
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+    post:
+      tags:
+        - interview
+      summary: 添加聊天视频
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: index
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: X-Token
+          in: header
+          schema:
+            type: string
+        - name: source
+          in: query
+          schema:
+            type: string
+            enum:
+              - interviewer
+              - interviewee
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+
+      responses:
+        '200':
+          description: 插入成功
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+
   /oj-interface/result:
     post:
       tags:
