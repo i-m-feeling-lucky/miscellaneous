@@ -254,7 +254,7 @@ paths:
       tags:
         - user
       summary: 获取个人空闲时间
-      description: 权限：current_user.id == id && current_user.role == interviewer
+      description: 权限：current_user.role == (interviewer || HR)
       parameters:
         - name: id
           in: path
@@ -342,7 +342,7 @@ paths:
       tags:
         - user
       summary: 获取分配给 HR 的面试官和面试者
-      description: 获取分配情况：HR - 面试官间，HR - 面试者间。权限：current_user.role == HR && (current_user, interviewer) in HRAssignInterviewer && (current_user, interviewee) in HRAssignInterviewee
+      description: 获取分配情况：HR - 面试官间，HR - 面试者间。权限：current_user.role == admin || current_user.role == HR && (current_user, interviewer) in HRAssignInterviewer && (current_user, interviewee) in HRAssignInterviewee
       parameters:
         - name: id
           in: path
