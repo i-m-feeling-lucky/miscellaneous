@@ -488,6 +488,9 @@ paths:
                     length:
                       description: 单位：分钟
                       type: integer
+                    actual_length:
+                      description: 单位：秒
+                      type: integer
                     status:
                       type: string
                       enum:
@@ -579,6 +582,9 @@ paths:
                     type: integer
                   length:
                     description: 单位：分钟
+                    type: integer
+                  actual_length:
+                    description: 单位：秒
                     type: integer
                   status:
                     type: string
