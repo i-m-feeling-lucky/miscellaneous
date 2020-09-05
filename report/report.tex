@@ -5,7 +5,6 @@
 \usetheme[subsectionpage=progressbar]{metropolis}
 \setcounter{tocdepth}{4}
 \usepackage{appendixnumberbeamer}
-\usepackage{multicol}
 
 \title{\huge 在线面试平台}
 \subtitle{\small 组名：i-m-feeling-lucky}
@@ -21,8 +20,17 @@
 \setbeamerfont{subsection in toc}{size=\footnotesize}
 \setbeamertemplate{section in toc}[sections numbered]
 
-\begin{frame}{Table of Contents}
-  \tableofcontents
+\begin{frame}{目录}
+  \renewcommand{\baselinestretch}{1.75}\normalsize
+  \begin{columns}[t]
+    \begin{column}{.3\textwidth}
+      \tableofcontents[sections={-3}]
+    \end{column}
+    \begin{column}{.5\textwidth}
+      \tableofcontents[sections={4-}]
+    \end{column}
+  \end{columns}
+  \renewcommand{\baselinestretch}{1.0}\normalsize
 \end{frame}
 
 \section{简介}
@@ -36,24 +44,64 @@
 \end{frame}
 
 \section{设计思路}
-\subsubsection{前端}
+\subsection{前端}
 \begin{frame}{前端}
   前端
 \end{frame}
-\subsubsection{后端}
+\subsection{后端}
 \begin{frame}{后端}
   后端
 \end{frame}
 
+\subsection{API}
+\begin{frame}{API}
+  API
+\end{frame}
+
+\subsection{权限控制}
+\begin{frame}{基于 token 的认证系统*}
+
+\end{frame}
+
+\begin{frame}{最小权限原则}
+
+\end{frame}
+
+\subsection{面试}
+\begin{frame}{面试}
+  面试
+\end{frame}
+
 \section{完成情况}
-\begin{frame}{完成情况}
-  完成情况
+
+\subsection{基础功能}
+\begin{frame}{基础功能}
+  基础功能
+\end{frame}
+
+\subsection{额外功能}
+\begin{frame}{额外功能}
+  额外功能
 \end{frame}
 
 \section{特色}
-\begin{frame}{特色}
-  特色
+\subsection{协作}
+\begin{frame}{协作}
+  协作
 \end{frame}
+
+\subsection{工作流}
+\begin{frame}{工作流}
+  工作流
+\end{frame}
+
+
+\subsection{文档}
+{
+  \usebackgroundtemplate{\includegraphics[width=\paperwidth]{../images/doc-main-page.png}}
+  \begin{frame}[plain]
+  \end{frame}
+}
 
 \begin{frame}[standout]
   \huge Thanks!
@@ -62,7 +110,12 @@
 \appendix
 
 \begin{frame}{演示}
-  \begin{center}\large \url{https://interview.yusanshi.com/}\end{center}
+  \large
+  主站\\
+  \url{https://interview.yusanshi.com/} \\
+  \bigskip
+  文档\\
+  \url{https://i-m-feeling-lucky.github.io/}
 \end{frame}
 
 \begin{frame}[standout]
