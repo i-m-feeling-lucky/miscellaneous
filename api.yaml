@@ -254,7 +254,7 @@ paths:
       tags:
         - user
       summary: 获取个人空闲时间
-      description: 权限：current_user.id == id && current_user.role == interviewer
+      description: 权限：current_user.role == (interviewer || HR)
       parameters:
         - name: id
           in: path
