@@ -1,0 +1,11 @@
+# ~/.config/systemd/user/oj-interface.service
+
+[Unit]
+Description=Online Interview OJ
+
+[Service]
+WorkingDirectory=/srv/interview/oj-interface/Interface
+ExecStart=%h/.local/bin/pipenv run gunicorn Interface.wsgi -b 127.0.0.1:8003
+
+[Install]
+WantedBy=multi-user.target

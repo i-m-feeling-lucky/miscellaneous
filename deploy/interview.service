@@ -1,0 +1,11 @@
+# ~/.config/systemd/user/interview.service
+
+[Unit]
+Description=Online Interview Backend
+
+[Service]
+WorkingDirectory=/srv/interview/backend/interview
+ExecStart=%h/.local/bin/pipenv run gunicorn interview.wsgi -b 127.0.0.1:8002
+
+[Install]
+WantedBy=multi-user.target
